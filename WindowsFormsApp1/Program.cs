@@ -71,20 +71,6 @@ namespace WindowsFormsApp1
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
-            Clipboard.GetText();
-            /*            Console.WriteLine("Getting Weather...");
-            var request = (HttpWebRequest)WebRequest.Create("http://wttr.in");
-            WebResponse response = request.GetResponse();
-            Console.WriteLine(((HttpWebResponse)response).StatusDescription);
-
-            using (Stream dataStream = response.GetResponseStream())
-            {
-                StreamReader reader = new StreamReader(dataStream);
-                string responseFromServer = reader.ReadToEnd();
-                Console.WriteLine(responseFromServer);
-            }
-            response.Close();*/
-
         }
     }
 }
